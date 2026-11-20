@@ -34,5 +34,7 @@ for h, a, st in rows:
 g = ri.load_games(pd.DataFrame(games))
 settings = ri.Settings(prior_sd=1.0, noise=1.6, home_mean=0.3, home_sd=0.3)
 fit = ri.fit_seasons(g, settings)[2030]
+print("Ratings in goals on a neutral field (true North average +0.22, South -0.20):")
 print(fit.ratings().sort_values("rating", ascending=False).round(2).to_string(index=False))
+print("\nNorth minus South, in goals; the true gap is +0.42 and the 90% range should usually hold it:")
 print(ri.league_gaps(fit, ri.league_of(g, 2030))[["A", "B", "gap", "lo90", "hi90", "bridge_games"]].round(2))

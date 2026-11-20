@@ -8,7 +8,7 @@ import pandas as pd
 from .circuit import league_resistance
 from .compare import compare_tiers
 from .data import league_of
-from .gaps import league_gaps
+from .gaps import both_ways, league_gaps
 from .ratings import Settings, fit_seasons
 from .tiers import league_tiers
 
@@ -31,12 +31,13 @@ def run(games: pd.DataFrame, settings: Settings = Settings(), min_tier_league: i
         if not tiers.empty:
             r = r.merge(tiers[["team", "rank", "tier", "tier_name"]].rename(columns={"rank": "rank_in_league"}),
                         on="team", how="left")
+            r[["rank_in_league", "tier"]] = r[["rank_in_league", "tier"]].astype("Int64")
             cmp = compare_tiers(fit, tiers, gaps)
             for k in ("tiers", "ladder", "tier_vs_tier", "matched_share"):
                 out[k].append(cmp[k])
             out["tier_teams"].append(tiers)
         out["ratings"].append(r.assign(home_field=fit.home_field, noise=fit.noise))
-        out["league_gaps"].append(gaps)
+        out["league_gaps"].append(both_ways(gaps))
         reg = fit.games[fit.games.season_type == "regular"]
         pairs = share_pairs if share_pairs is not None else list(zip(gaps.A, gaps.B))
         for A, B in pairs:

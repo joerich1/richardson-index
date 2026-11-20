@@ -3,6 +3,9 @@
 How much better is one league than another, when they barely play each other? The Richardson Index answers with a gap
 in points, a range that admits how few games link the leagues, and tiers inside each league.
 
+A gap is how many points the average team of one league would beat the other's by on a neutral field, where neither
+team is at home. A tier is a group of teams in one league that the ratings can't tell apart.
+
 It was built for the college football essay "SEC Versus Big Ten, Through Everyone Else" on
 [josephrichardson.dev](https://josephrichardson.dev). It works for any sport with leagues and scores.
 
@@ -21,7 +24,8 @@ Tier against tier, the SEC's lead grows down the league:
 | Third tier | 7 | 7 | 6.7 | 1.4 to 11.9 | SEC better |
 | Bottom tier | 3 | 2 | 10.2 | 2.3 to 18.2 | SEC better |
 
-"Better" means the ratings are at least 95% sure. Every number is in [`outputs/`](outputs/).
+"SEC better" means the whole 90% range is above zero, which is the same as the ratings being at least 95% sure. The
+SEC's teams in each tier are listed by `python3 examples/look_up_results.py`. Every number is in [`outputs/`](outputs/).
 
 ## Quickstart
 
@@ -30,9 +34,9 @@ Python 3.11 or newer.
 ```bash
 git clone https://github.com/joerich1/richardson-index.git
 cd richardson-index
-python -m venv .venv && source .venv/bin/activate
+python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt && pip install -e .
-python scripts/run_index.py data/toy/games.csv --out toy_outputs
+python3 scripts/run_index.py data/toy/games.csv --out toy_outputs
 ```
 
 The toy data is three made-up seasons of three made-up leagues. The run takes about a second. It prints one line per
@@ -50,18 +54,18 @@ The true strengths behind the toy games are in `data/toy/truth.csv`, so you can 
 ## Using real data
 
 1. Get a free key from [CollegeFootballData](https://collegefootballdata.com/key).
-2. Copy `.env.example` to `.env` and put your key after `CFBD_API_KEY=`.
-3. Download the games. This uses 52 calls, two per season, and takes about a minute:
+2. In the repo's top folder, copy `.env.example` to `.env` and put your key after `CFBD_API_KEY=`.
+3. Download the games into `data/raw/`. This uses 52 calls, two per season, and takes about a minute:
    ```bash
-   python scripts/fetch_cfbd.py --first 2001 --last 2026
+   python3 scripts/fetch_cfbd.py --first 2001 --last 2026
    ```
 4. Run the index. Every season from 2001 takes about 6 seconds on a laptop:
    ```bash
-   python scripts/run_index.py data/raw/games.csv --out my_outputs
+   python3 scripts/run_index.py data/raw/games.csv --out my_outputs
    ```
+   To reproduce `outputs/` exactly, add `--through 2026:11`, which stops at week 11 of 2026.
 
-Add `--through 2026:11` to stop at a given week. That run reproduces the numbers in `outputs/`. The downloaded games
-stay on your machine: CollegeFootballData's terms let you publish what you compute, not its data.
+The downloaded games stay on your machine: CollegeFootballData's terms let you publish what you compute, not its data.
 
 ## What's in the outputs
 
@@ -79,7 +83,11 @@ range" is where the true value lies with 90% probability.
 | `matched_share.csv` | tier, other league and season | A tier against the same share of another league, for leagues of different sizes |
 | `game_shares.csv` | game, pair of leagues and season | The 15 games that carry most of each league comparison, and each one's share |
 
-Column names are spelled out in plain words. `A` and `B` name the two sides, and every gap is A minus B.
+**Reading a table.** Filter on `season` first, since every file covers 2001 to 2026. `A` and `B` name the two sides,
+and every gap is A minus B. In `league_gaps.csv` each pair appears both ways round, so look for the row with your
+league as `A`. The columns that matter are `gap`, `lo90` and `hi90` (the 90% range), and `p_A_better`, the chance
+A's average team is truly better. The rest show where the doubt comes from: `sd_rating` from the ratings, `sd_link`
+from the linking error, and `sd` both together.
 
 ## How it works
 

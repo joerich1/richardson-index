@@ -39,6 +39,13 @@ def drop_game(fit: SeasonFit, g: int) -> np.ndarray:
     return fit.mean - cov_d @ x * (fit.y[g] - x @ fit.mean) / fit.noise**2
 
 
+def both_ways(gaps: pd.DataFrame) -> pd.DataFrame:
+    """Each pair listed both ways round (A, B and B, A), so a reader can find either league first."""
+    f = gaps.rename(columns={"A": "B", "B": "A", "nA": "nB", "nB": "nA"}).copy()
+    f["gap"], f["lo90"], f["hi90"], f["p_A_better"] = -gaps.gap, -gaps.hi90, -gaps.lo90, 1 - gaps.p_A_better
+    return pd.concat([gaps, f[gaps.columns]], ignore_index=True).sort_values(["season", "A", "B"]).reset_index(drop=True)
+
+
 def league_gaps(fit: SeasonFit, leagues_of: dict, min_teams: int = 4) -> pd.DataFrame:
     """Every pair of leagues in one season: gap, rating doubt, linking error, 90% range, chance A is better.
 
