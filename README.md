@@ -32,7 +32,7 @@ Tier against tier, the SEC's lead grows as you go down each league:
 "SEC better" means the whole margin of error sits above zero. The teams in each tier are listed by
 `python3 examples/look_up_results.py`, and every number is in [`outputs/`](outputs/).
 
-## Try it in a minute
+## Quickstart
 
 You need Python 3.11 or newer.
 
