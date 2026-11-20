@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.0 (not yet released)
+## 1.0.0 (2026-11-20)
 
 First release. It has ratings, league gaps with linking error, the schedule as a circuit, and tiers inside each
 league, from top tier to bottom tier. It also has tier comparisons and the game influence check. Results in `outputs/` cover FBS seasons
