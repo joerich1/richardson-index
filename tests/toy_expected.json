@@ -1,0 +1,81 @@
+{
+ "note": "Made by running the method on data/toy/games.csv; tests/test_method.py checks a fresh run against it.",
+ "gaps_2026": [
+  {
+   "A": "Coastal",
+   "B": "Northern",
+   "gap": -5.6924113,
+   "sd": 2.65876005
+  },
+  {
+   "A": "Coastal",
+   "B": "Prairie",
+   "gap": 3.40976974,
+   "sd": 3.00607243
+  },
+  {
+   "A": "Northern",
+   "B": "Prairie",
+   "gap": 9.10218104,
+   "sd": 3.12939453
+  }
+ ],
+ "tiers_2026": {
+  "Coastal": [
+   [
+    "Kingsport",
+    "Lowell",
+    "Newbury"
+   ],
+   [
+    "Marlow",
+    "Oakham",
+    "Penrith"
+   ],
+   [
+    "Quarry",
+    "Thornton",
+    "Selby",
+    "Redfield"
+   ]
+  ],
+  "Northern": [
+   [
+    "Ashford",
+    "Brookline"
+   ],
+   [
+    "Fenwick",
+    "Carrow"
+   ],
+   [
+    "Dunmore",
+    "Elsworth",
+    "Hollis"
+   ],
+   [
+    "Garland",
+    "Irvine",
+    "Jasper"
+   ]
+  ],
+  "Prairie": [
+   [
+    "Upton"
+   ],
+   [
+    "Yardley",
+    "Zephyr"
+   ],
+   [
+    "Alder",
+    "Vale",
+    "Westbrook",
+    "Cedar"
+   ],
+   [
+    "Birch"
+   ]
+  ]
+ }
+}

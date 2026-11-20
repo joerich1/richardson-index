@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this software or its results, please cite it as below."
+title: "The Richardson Index"
+abstract: "League gaps with a range that includes linking error, the schedule as an electrical circuit, and tiers inside each league, for comparing sports leagues that rarely play each other."
+authors:
+  - family-names: Richardson
+    given-names: Joseph
+    orcid: "https://orcid.org/0009-0007-9431-0171"
+version: 1.0.0
+date-released: 2026-11-20
+license: MIT
+repository-code: "https://github.com/joerich1/richardson-index"
+url: "https://josephrichardson.dev"
+keywords:
+  - sports analytics
+  - college football
+  - rating systems
+  - network analysis
