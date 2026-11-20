@@ -1,36 +1,40 @@
 # The Richardson Index
 
-How much better is one league than another, when they barely play each other? The Richardson Index answers with a gap
-in points, a range that admits how few games link the leagues, and tiers inside each league.
+Is the SEC better than the Big Ten? Fans argue it every fall, but the two leagues played each other just three times
+in 2026. The Richardson Index settles arguments like that one by going through everyone else. It joins every game
+into one network, so a league's games against outside opponents count as evidence too.
 
-A gap is how many points the average team of one league would beat the other's by on a neutral field, where neither
-team is at home. A tier is a group of teams in one league that the ratings can't tell apart.
+For any two leagues, it gives you three things:
 
-It was built for the college football essay
-[SEC Versus Big Ten, Through Everyone Else](https://josephrichardson.dev/essays/sec-versus-big-ten/). It works for
-any sport with leagues and scores.
+- **A league gap.** How many points the average team of one league would beat the other's by on a neutral field.
+- **A margin of error.** How far off that gap could be, widened when only a few games link the two leagues.
+- **Tiers.** Groups of teams inside each league whose ratings sit too close together to say which team is better.
 
-## One result
+It was built for the essay
+[SEC Versus Big Ten, Through Everyone Else](https://josephrichardson.dev/essays/sec-versus-big-ten/), and it works
+for any sport with leagues and scores.
 
-The SEC's average team would beat the Big Ten's by 4.9 points on a neutral field (2026 season through week 11). The
-90% range is 0.7 to 9.0 points. The two leagues played each other three times. The answer rests on 69 games
-between one of them and some other league.
+## What it found
 
-Tier against tier, the SEC's lead grows down the league:
+Through week 11 of 2026, the SEC's average team would beat the Big Ten's by 4.88 points on a neutral field. The 90%
+margin of error runs from 0.7 to 9.0 points, so even the low end favors the SEC. The two leagues met only 3 times, so most of the evidence comes from
+the 66 games they played against other leagues.
 
-| Tier | SEC teams | Big Ten teams | SEC lead, points | 90% range | Verdict |
+Tier against tier, the SEC's lead grows as you go down each league:
+
+| Tier | SEC teams | Big Ten teams | SEC lead, points | 90% margin of error | Verdict |
 |---|---|---|---|---|---|
 | Top tier | 2 | 2 | 4.2 | -4.3 to 12.6 | Too close to call |
 | Second tier | 4 | 7 | 5.7 | -0.1 to 11.5 | Too close to call |
 | Third tier | 7 | 7 | 6.7 | 1.4 to 11.9 | SEC better |
 | Bottom tier | 3 | 2 | 10.2 | 2.3 to 18.2 | SEC better |
 
-"SEC better" means the whole 90% range is above zero, which is the same as the ratings being at least 95% sure. The
-SEC's teams in each tier are listed by `python3 examples/look_up_results.py`. Every number is in [`outputs/`](outputs/).
+"SEC better" means the whole margin of error sits above zero. The teams in each tier are listed by
+`python3 examples/look_up_results.py`, and every number is in [`outputs/`](outputs/).
 
-## Quickstart
+## Try it in a minute
 
-Python 3.11 or newer.
+You need Python 3.11 or newer.
 
 ```bash
 git clone https://github.com/joerich1/richardson-index.git
@@ -40,8 +44,8 @@ pip install -r requirements.txt && pip install -e .
 python3 scripts/run_index.py data/toy/games.csv --out toy_outputs
 ```
 
-The toy data is three made-up seasons of three made-up leagues. The run takes about a second. It prints one line per
-season, then writes eight tables to `toy_outputs/`:
+The toy data is three made-up seasons of three made-up leagues. The run takes about a second. It prints one line for
+each season, then writes eight tables to `toy_outputs/`:
 
 ```
 richardson-index 1.0.0: 531 played games, seasons 2024-2026
@@ -50,73 +54,77 @@ richardson-index 1.0.0: 531 played games, seasons 2024-2026
 wrote 8 tables to toy_outputs/ in 0 s
 ```
 
-The true strengths behind the toy games are in `data/toy/truth.csv`, so you can check what the method found.
+The true strengths behind the toy games are in `data/toy/truth.csv`, so you can check how close the method came.
 
-## Using real data
+## Run it on real college football
 
 1. Get a free key from [CollegeFootballData](https://collegefootballdata.com/key).
-2. In the repo's top folder, copy `.env.example` to `.env` and put your key after `CFBD_API_KEY=`.
-3. Download the games into `data/raw/`. This uses 52 calls, two per season, and takes about a minute:
+2. In the repo's top folder, copy `.env.example` to `.env`. Put your key after `CFBD_API_KEY=`.
+3. Download the games into `data/raw/`. This takes 52 calls, two per season, and about a minute:
    ```bash
    python3 scripts/fetch_cfbd.py --first 2001 --last 2026
    ```
-4. Run the index. Every season from 2001 takes about 6 seconds on a laptop:
+4. Run the index. Every season since 2001 takes about 6 seconds on a laptop:
    ```bash
    python3 scripts/run_index.py data/raw/games.csv --out my_outputs
    ```
-   To reproduce `outputs/` exactly, add `--through 2026:11`, which stops at week 11 of 2026.
+   To match `outputs/` exactly, add `--through 2026:11`. That stops at week 11 of 2026.
 
-The downloaded games stay on your machine: CollegeFootballData's terms let you publish what you compute, not its data.
+The downloaded games stay on your machine. CollegeFootballData's terms let you publish what you compute, but not its
+data.
 
 ## What's in the outputs
 
-Each file opens in a spreadsheet. Ratings are points on a neutral field, and the average FBS team is near 0. A "90%
-range" is where the true value lies with 90% probability.
+Each file opens in a spreadsheet. Ratings are in points on a neutral field, and the average FBS team sits near 0. A
+90% margin of error is the span where the true value lies with 90% probability.
 
-| File | One row per | What it tells you |
+| File | One row for each | What it tells you |
 |---|---|---|
-| `ratings.csv` | team and season | Rating and its uncertainty, national rank, rank and tier in its league |
-| `league_gaps.csv` | pair of leagues and season | Gap between the leagues' average teams, its 90% range, and the chance the first league is better |
+| `ratings.csv` | team and season | Rating and its uncertainty, national rank, and rank and tier in its league |
+| `league_gaps.csv` | pair of leagues and season | The gap between the leagues' average teams, its margin of error, and the chance the first league is better |
 | `tier_teams.csv` | team and season | Each team's tier, for leagues of 8 or more teams |
 | `tiers.csv` | tier and season | The tier's teams and average rating |
 | `ladder.csv` | tier and season | Every tier in the country, best to worst |
-| `tier_vs_tier.csv` | pair of tiers and season | Gap, 90% range, verdict and the win chance of a random team from each |
-| `matched_share.csv` | tier, other league and season | A tier against the same share of another league, for leagues of different sizes |
-| `game_shares.csv` | game, pair of leagues and season | The 15 games that carry most of each league comparison, and each one's share |
+| `tier_vs_tier.csv` | pair of tiers and season | The gap, its margin of error, the verdict, and the win chance of a random team from each |
+| `matched_share.csv` | tier, other league, and season | A tier against the same share of another league, for leagues of different sizes |
+| `game_shares.csv` | game, pair of leagues, and season | The 15 games that carry most of each league comparison, and each one's share |
 
-**Reading a table.** Filter on `season` first, since every file covers 2001 to 2026. `A` and `B` name the two sides,
-and every gap is A minus B. In `league_gaps.csv` each pair appears both ways round, so look for the row with your
-league as `A`. The columns that matter are `gap`, `lo90` and `hi90` (the 90% range), and `p_A_better`, the chance
-A's average team is truly better. The rest show where the doubt comes from: `sd_rating` from the ratings, `sd_link`
-from the linking error, and `sd` both together.
+**Reading a table.** Every file covers 2001 to 2026, so filter on `season` first. `A` and `B` name the two sides, and
+every gap is A minus B. In `league_gaps.csv`, each pair appears both ways round, so look for the row with your league
+as `A`. The columns that matter are `gap`, then `lo90` and `hi90` (the two ends of the margin of error). `p_A_better`
+is the chance that A's average team is truly better. The rest show where the uncertainty comes from: `sd_rating`
+from the ratings, `sd_link` from the linking error, and `sd` from both together.
 
 ## How it works
 
-**Ratings.** Each game's margin is the home team's rating minus the away team's, plus home field, plus noise. This is
-Massey's method. Each team starts the season at last season's rating, with a spread of 8 points around it.
+**Ratings.** Each game's margin is the home team's rating minus the away team's, plus home field, plus luck. This is
+Kenneth Massey's method. Each team starts the season at last season's rating, give or take 8 points, and every game
+moves it from there.
 
-**League gaps.** The gap is one league's average rating minus the other's. Its range adds the ratings' own
-uncertainty and a linking error. The linking error leaves out each game between a league team and an outsider in turn,
-and sees how far the gap moves.
+**League gaps.** The gap is one league's average rating minus the other's. Its margin of error has two parts: The
+ratings' own uncertainty and a linking error. The linking error drops each game between a league team and an outsider,
+one at a time, and measures how far the gap moves.
 
-**The schedule as a circuit.** Every game is a wire between two teams. Effective resistance measures how well two
-leagues are connected by games. It gives the doubt the schedule alone leaves in the gap, and each game's share of it.
-For SEC against Big Ten in 2026, the schedule alone leaves 3.8 points of doubt. Minnesota against Mississippi State
-carries 5% of it, more than any other game.
+**The schedule as a circuit.** Picture every game as a wire between two teams. Effective resistance measures how well
+those wires connect two leagues. It gives the margin of error the schedule alone would leave, and how much each game
+counts. For SEC against Big Ten in 2026, the schedule alone leaves a 90% margin of error of about 6 points.
+Mississippi State at Minnesota carries 5% of that, more than any other game.
 
-**Tiers.** Teams the ratings can't tell apart share a tier. Tiers are built by joining neighboring teams, and never hold
-two teams the ratings are 95% sure differ. The number of tiers is chosen by the data, and one team can be a tier.
+**Tiers.** Teams that the ratings can't tell apart share a tier. Tiers are built by joining neighboring teams, and a
+tier never holds two teams the ratings are 95% sure differ. The data decides how many tiers each league gets, and a
+single team can be a tier.
 
-The math, the tests behind each choice and the papers it builds on are in [`docs/METHOD.md`](docs/METHOD.md).
+The math, the tests behind each choice, and the papers it builds on are in [`docs/METHOD.md`](docs/METHOD.md).
 
-## Using it on other data
+## Use it for another sport
 
-Any sport with leagues and scores works. Make a CSV with the columns in [`data/SCHEMA.md`](data/SCHEMA.md): one row
-per game, with the two teams, their leagues and the score. Then run `scripts/run_index.py` on it.
+Any sport with leagues and scores works. Make a CSV with the columns in [`data/SCHEMA.md`](data/SCHEMA.md): One row
+for each game, with the two teams, their leagues, and the score. Then run `scripts/run_index.py` on it.
 [`examples/other_sport.py`](examples/other_sport.py) builds a small soccer-style table by hand and runs it.
 
-The default settings were tuned on college football, where the game-to-game noise is about 14 points. For another
-sport, pass your own `Settings` to `fit_seasons`; the comments in `src/richardson_index/ratings.py` explain each one.
+The default settings were tuned on college football, where one game's result swings about 14 points from what the
+ratings expect. For another sport, pass your own `Settings` to `fit_seasons`. The comments in
+`src/richardson_index/ratings.py` explain each setting.
 
 ## Cite
 
@@ -130,7 +138,7 @@ https://doi.org/10.5281/zenodo.24389727.
 ## License and data credits
 
 - Code: MIT ([`LICENSE`](LICENSE)).
-- Results in `outputs/`: CC BY 4.0 ([`LICENSE-data`](LICENSE-data)). Use them freely with credit.
+- Results in `outputs/`: CC BY 4.0 ([`LICENSE-data`](LICENSE-data)). Use them freely, with credit.
 - Data provided by [CollegeFootballData.com](https://collegefootballdata.com). No game data is included here.
 - Team and league names belong to their owners.
 
