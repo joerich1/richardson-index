@@ -6,8 +6,9 @@ in points, a range that admits how few games link the leagues, and tiers inside 
 A gap is how many points the average team of one league would beat the other's by on a neutral field, where neither
 team is at home. A tier is a group of teams in one league that the ratings can't tell apart.
 
-It was built for the college football essay "SEC Versus Big Ten, Through Everyone Else" on
-[josephrichardson.dev](https://josephrichardson.dev). It works for any sport with leagues and scores.
+It was built for the college football essay
+[SEC Versus Big Ten, Through Everyone Else](https://josephrichardson.dev/essays/sec-versus-big-ten/). It works for
+any sport with leagues and scores.
 
 ## One result
 
