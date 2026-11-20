@@ -7,6 +7,14 @@ authors:
     given-names: Joseph
     orcid: "https://orcid.org/0009-0007-9431-0171"
 version: 1.0.0
+doi: 10.5281/zenodo.24389726
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.24389726
+    description: "All versions (the concept DOI)"
+  - type: doi
+    value: 10.5281/zenodo.24389727
+    description: "Version 1.0.0"
 date-released: 2026-11-20
 license: MIT
 repository-code: "https://github.com/joerich1/richardson-index"

@@ -122,7 +122,10 @@ sport, pass your own `Settings` to `fit_seasons`; the comments in `src/richardso
 
 If you use this, please cite it with the "Cite this repository" button on GitHub, or:
 
-> Richardson, J. (2026). *The Richardson Index* (version 1.0.0). https://github.com/joerich1/richardson-index
+> Richardson, J. (2026). *The Richardson Index* (version 1.0.0). Zenodo. https://doi.org/10.5281/zenodo.24389726
+
+That DOI always points to the latest version. To cite version 1.0.0 exactly, use
+https://doi.org/10.5281/zenodo.24389727.
 
 ## License and data credits
 
